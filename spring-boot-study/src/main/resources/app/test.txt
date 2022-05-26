@@ -1,0 +1,1 @@
+CommonResponse(code=200, bizCode=200, bizMsg=成功, errorMsg=null, errorSource=null, errorCauseName=null, data=QueryNameScreeningResultResponse(super=NameCheckResult(referenceId=5835, status=No Hit, caseId=., caseStatus=null, caseResult=null, isPoliticalPerson=null, hasNegativeNews=null), ))

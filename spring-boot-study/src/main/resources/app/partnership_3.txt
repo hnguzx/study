@@ -1,0 +1,1 @@
+data={"parameters":{"entity_type":"partnership","cr_number":"null","br_number":"00135239"},"id":"85700288-20f6-464e-95e0-zxcasd123123","status":"pending","progress":"0000","client_id":"c93606f6-bef8-4fd5-abc3-b9a8898a1f67","client_reference":null,"name":"string","remark":null,"created_at":"2021-09-15T06:52:19.837033"})

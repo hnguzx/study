@@ -1,0 +1,1 @@
+data={"parameters":{"entity_type":"local_limited","cr_number":"1026143","br_number":"36687383"},"id":"1b923536-355d-44c1-b8b6-2f1e1ca02541","status":"pending","progress":"0000","client_id":"c93606f6-bef8-4fd5-abc3-b9a8898a1f67","client_reference":null,"name":"string","remark":null,"created_at":"2021-09-15T08:04:42.770551"})

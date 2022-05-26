@@ -1,0 +1,1 @@
+data={"parameters":{"entity_type":"sole_proprietorship","cr_number":null,"br_number":"55011339"},"id":"c4ee7f9c-f214-4362-9bb1-13771827939f","status":"pending","progress":"0000","client_id":"c93606f6-bef8-4fd5-abc3-b9a8898a1f67","client_reference":null,"name":"string","remark":null,"created_at":"2021-09-15T07:18:34.116683"})

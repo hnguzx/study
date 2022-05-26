@@ -1,0 +1,87 @@
+server:
+  port: 8070
+
+spring:
+  application:
+    name: spring-boot-study
+  profiles:
+    active: sit
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 970712
+    url: jdbc:mysql://127.0.0.1:3306/guzx_test?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      # 获取连接的超时时间-毫秒
+      max-wait: 6000
+      # 检测需要关闭的空闲连接间隔-毫秒
+      time-between-eviction-runs-millis: 60000
+      # 连接的最小生存时间
+      min-evictable-idle-time-millis: 300000
+#      validation-query: select 1 from dual;
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      async-init: true
+      # 开启pc cache
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控，防火墙
+      filters: stat,wall,slf4j
+      connection-properties: druid.stat.mergeSql=true,druid.stat.slowSqlMillis=5000
+#      wall-stat-map:
+
+      use-global-data-source-stat: true
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: /druid/*
+        session-stat-enable: true
+        session-stat-max-count: 1000
+        profile-enable: true
+#        principal-cookie-name:
+#        principal-session-name:
+
+      # 开启默认监控页面
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        # 是否允许清空统计数据
+        reset-enable: false
+        login-username: admin
+        login-password: 123456
+        allow: 10.239.148.1/16,127.0.0.1
+#        deny: 10.239.148.1/16
+
+mybatis:
+  mapper-locations: classpath*:/mybatis-mapper/*Mapper.xml
+
+jasypt:
+  encryptor:
+    password: taskAdmin
+
+logging:
+  level:
+    root: info
+    main:
+      dao: debug
+
+response:
+  path: classpath:app/
+
+
+---
+spring:
+  profiles: dev
+customer:
+  url: www.baidu.com
+
+---
+spring:
+  profiles: sit
+customer:
+  url: www.baidu.com
