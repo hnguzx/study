@@ -1,19 +1,18 @@
 package main.java;
 
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import main.service.impl.CustomerServiceImpl;
 import main.util.JsonUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -178,5 +177,53 @@ public class InterviewTest {
 
         Map map = new HashMap();
 
+    }
+
+    @Test
+    void testTry() throws FileNotFoundException {
+        InputStream inputStream = new FileInputStream("123");
+        Scanner scanner = new Scanner(System.in);
+        try (inputStream; scanner) {
+
+        } catch (IOException e) {
+
+        }
+    }
+
+    @Test
+    void testFanxin() {
+        /*List<? extends Integer> list1 = new ArrayList<>();
+        list1.add(new Integer(2));
+        Integer integer1 = list1.get(0);
+
+        List<? super Integer> list2 = new ArrayList<>();
+        list2.add(new Integer(2));
+        Integer integer2 = list2.get(0);*/
+
+        long milliSecond = 1288834974657L;
+        Date date = new Date();
+        date.setTime(milliSecond);
+        System.out.println(new SimpleDateFormat().format(date));
+
+        System.out.println("当前时间：{}" + System.currentTimeMillis());
+
+
+        long timestamp = 1654844706709L;
+        long twepoch = 1288834974657L;
+        long timestampLeftShift = 12L;
+
+        long datacenterId = 5L;
+        long datacenterIdShift = 5L;
+
+        long workerId = 8L;
+        long workerIdShift = 5L;
+
+        long sequence = 4102L;
+
+        long result = ((timestamp - twepoch) << timestampLeftShift)
+                | (datacenterId << datacenterIdShift)
+                | (workerId << workerIdShift)
+                | sequence;
+        System.out.println("result:" + result);
     }
 }
