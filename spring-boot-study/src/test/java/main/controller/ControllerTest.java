@@ -19,7 +19,7 @@ import java.io.IOException;
  * 测试指定controller，controller中没有调用其它component
  */
 @Slf4j
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 @WebMvcTest(DemoController.class)
 public class ControllerTest {
     @Autowired

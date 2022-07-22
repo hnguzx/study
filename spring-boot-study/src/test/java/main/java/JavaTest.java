@@ -1,6 +1,7 @@
 package main.java;
 
 import lombok.extern.slf4j.Slf4j;
+import main.model.Customer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
@@ -17,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static java.lang.Math.*;
+
 import org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
@@ -157,5 +159,51 @@ public class JavaTest {
         int i = map1.get("123");
         log.info("取值为：{}", i);
     }
+
+    @Test
+    void testIf() {
+        int i = 10;
+        if (i > 1) {
+            log.info("1");
+        } else if (i > 2) {
+            log.info("2");
+        } else if (i > 3) {
+            log.info("3");
+        } else if (i > 10) {
+            log.info("10");
+
+        } else {
+            log.info("大于10");
+        }
+    }
+
+    @Test
+    void testList3() {
+        List<Customer> list = new ArrayList<>();
+        Customer customer1 = new Customer(1, "guzx", "123");
+        Customer customer2 = new Customer(2, "guzx2", "12322");
+
+        list.add(customer1);
+        list.add(customer2);
+        log.info("before change list:{}", list.toString());
+        for (Customer customer : list) {
+            customer.setUsername("123");
+        }
+        log.info("after change list:{}", list.toString());
+    }
+
+    @Test
+    void testCompareTo() {
+        int i = "1.2".compareTo("3.4");
+        log.info("compareTo:{}", i);
+    }
+
+    @Test
+    void testString2(){
+        String format = String.format("%,.2f", 123456.789);
+        log.info("format:{}",format);
+    }
+
+
 
 }
