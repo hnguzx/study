@@ -199,11 +199,30 @@ public class JavaTest {
     }
 
     @Test
-    void testString2(){
-        String format = String.format("%,.2f", 123456.789);
-        log.info("format:{}",format);
+    void testString2() {
+        //String format = String.format("%,.2f", 123456.789);
+        //log.info("format:{}", format);
+        String colorStr = "1234567";
+        colorStr.replaceAll("#","1");
+        if (colorStr.length() > 5) {
+            log.info("colorStr长度大于五");
+            colorStr = colorStr.substring(colorStr.length() - 6);
+        }
+        log.info("colorStr:{}", colorStr);
     }
 
+    @Test
+    void testObject2() {
+        Customer customer = new Customer();
+        setCustomer(customer);
+        log.info("setCustomer:{}", customer);
+    }
+
+    void setCustomer(Customer customer){
+        customer.setId(1);
+        customer.setUsername("name");
+        customer.setPassword("123456");
+    }
 
 
 }

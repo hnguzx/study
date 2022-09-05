@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
@@ -153,7 +154,7 @@ public class Java8Test {
         log.info("year:{},month:{},dayOfMonth:{},dayOfWeek:{}", year, monthValue, dayOfMonth, weekValue);
 
         LocalDate localDate = now.plusDays(6L);
-        log.info("格式化date：{}", localDate.format(DateTimeFormatter.ISO_DATE));
+        log.info("格式化date：{}", localDate.format(DateTimeFormatter.BASIC_ISO_DATE));
 
         // time LocalTime LocalDateTime
         LocalTime time = LocalTime.now();
@@ -172,21 +173,21 @@ public class Java8Test {
         LocalDate parse = LocalDate.parse("2021-06-12");
         log.info("after：{}", parse.isAfter(now));
         log.info("after：{}", now.isAfter(parse));
-        log.info("withYear:{}",now.withYear(2025));
-        log.info("withMonth:{}",now.withMonth(4));
-        log.info("withDayOfYear:{}",now.withDayOfYear(78));
+        log.info("withYear:{}", now.withYear(2025));
+        log.info("withMonth:{}", now.withMonth(4));
+        log.info("withDayOfYear:{}", now.withDayOfYear(78));
 
         Date date = new Date();
         LocalDateTime dateTime1 = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
-        log.info("date to localDateTime:{}",dateTime1);
+        log.info("date to localDateTime:{}", dateTime1);
         Calendar calendar = Calendar.getInstance();
         LocalDateTime dateTime2 = LocalDateTime.ofInstant(calendar.toInstant(), ZoneId.systemDefault());
-        log.info("calendar to localDateTime:{}",dateTime2);
+        log.info("calendar to localDateTime:{}", dateTime2);
 
         Date from = Date.from(dateTime1.atZone(ZoneId.systemDefault()).toInstant());
         GregorianCalendar from1 = GregorianCalendar.from(ZonedDateTime.of(dateTime1, ZoneId.systemDefault()));
-        log.info("localDateTime to date:{}",from);
-        log.info("localDateTime to calendar:{}",from1.getTime());
+        log.info("localDateTime to date:{}", from);
+        log.info("localDateTime to calendar:{}", from1.getTime());
 
     }
 
@@ -198,6 +199,16 @@ public class Java8Test {
         byte[] encode = encoder.encode("guzhixiong".getBytes());
         byte[] decode = decoder.decode(encode);
         log.info("decode:{}", new String(decode, StandardCharsets.UTF_8));
+    }
+
+    @Test
+    void testLocalDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        Date endTime = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+        log.info("now dateTime:{}", endTime);
+
+        Date starTime = Date.from(now.plusHours(-1).atZone(ZoneId.systemDefault()).toInstant());
+        log.info("one hours before dateTime:{}", starTime);
     }
 
 }

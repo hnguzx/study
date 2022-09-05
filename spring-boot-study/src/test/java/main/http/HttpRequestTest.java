@@ -1,5 +1,6 @@
 package main.http;
 
+import lombok.extern.slf4j.Slf4j;
 import main.dto.WebResp;
 import main.enums.CommonRespCode;
 import org.assertj.core.api.Assertions;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 /**
  * http测试
  */
+@Slf4j
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HttpRequestTest {
@@ -34,6 +36,7 @@ public class HttpRequestTest {
      */
     @Test
     public void testDemo() {
+        log.info("port:{}", port);
         ResponseEntity<WebResp> result = restTemplate.getForEntity("http://localhost:" + port + "/demo", WebResp.class);
         Assertions.assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         Assertions.assertThat(result.getBody().getCode()).isEqualTo(CommonRespCode.SUCCESS);
@@ -44,6 +47,7 @@ public class HttpRequestTest {
 
     /**
      * 调用本地服务
+     *
      * @throws Exception
      */
     @Test
