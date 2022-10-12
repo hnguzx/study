@@ -73,7 +73,7 @@ public class SearchTest {
         }
 
         int mid = begin + ((end - begin) / (list.get(end).length() - list.get(begin).length())) * (result.length() - list.get(begin).length());
-        if (list.get(mid).length() == result.length()) {
+        if (list.get(mid).equals(result)) {
             return mid;
         }
         if (list.get(mid).length() < result.length()) {

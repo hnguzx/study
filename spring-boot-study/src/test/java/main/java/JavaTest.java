@@ -203,7 +203,7 @@ public class JavaTest {
         //String format = String.format("%,.2f", 123456.789);
         //log.info("format:{}", format);
         String colorStr = "1234567";
-        colorStr.replaceAll("#","1");
+        colorStr.replaceAll("#", "1");
         if (colorStr.length() > 5) {
             log.info("colorStr长度大于五");
             colorStr = colorStr.substring(colorStr.length() - 6);
@@ -218,11 +218,61 @@ public class JavaTest {
         log.info("setCustomer:{}", customer);
     }
 
-    void setCustomer(Customer customer){
+    void setCustomer(Customer customer) {
         customer.setId(1);
         customer.setUsername("name");
         customer.setPassword("123456");
     }
 
+    @Test
+    void testString3() {
+        String join = String.join(".", "guzx", "lianghong");
+        log.info("join:{}", join);
+
+        log.info("join length:{},join last 4 char:{}", join.length(), join.substring(join.length() - 4));
+    }
+
+    @Test
+    void testListOrder() {
+        List<Customer> list = new ArrayList<Customer>();
+        Customer customer1 = new Customer(2, "guzx2", "123");
+        Customer customer2 = new Customer(3, "guzx3", "123");
+        Customer customer3 = new Customer(1, "guzx1", "123");
+        list.add(customer1);
+        list.add(customer2);
+        list.add(customer3);
+        log.info("List order:{}", list);
+        list.sort(Comparator.comparingInt(Customer::getId));
+        log.info("List order:{}", list);
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        log.info("this is:{}", Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
+
+    @Test
+    void stringToNumber() {
+        String number = "45.6";
+        String substring = number.substring(0, 3);
+        log.info("version is :{}", substring);
+
+        if (Float.parseFloat(substring) < 4.7) {
+            log.info("小于4.7");
+        } else {
+            log.info("不小于4.7");
+        }
+        String link = "fintech://insightbank.mi.com/transferIn";
+        String[] split = link.split("/");
+        log.info("type:{}", split[3]);
+    }
+
+    @Test
+    void stringBuild() {
+        StringBuilder s = new StringBuilder();
+        String name = null;
+        s.append(name);
+        s.append("123");
+        log.info("s:{}", s.toString());
+        s.setLength(0);
+        log.info("s:{}", s.toString());
+    }
 
 }
