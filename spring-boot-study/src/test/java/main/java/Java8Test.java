@@ -87,7 +87,7 @@ public class Java8Test {
     void testSupplier() {
         Supplier<Customer> supplier = Customer::new;
         Customer s = supplier.get();
-        System.out.println(s.getUsername());
+        System.out.println(s.getUserName());
     }
 
     @Test

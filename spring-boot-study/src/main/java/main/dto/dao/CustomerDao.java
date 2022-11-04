@@ -1,4 +1,4 @@
-package main.dao;
+package main.dto.dao;
 
 import main.model.Customer;
 import org.apache.ibatis.annotations.Mapper;

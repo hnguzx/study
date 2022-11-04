@@ -14,6 +14,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Customer implements Serializable {
     private Integer id;
-    private String username;
-    private String password;
+    private String userName;
+    private String passWord;
 }

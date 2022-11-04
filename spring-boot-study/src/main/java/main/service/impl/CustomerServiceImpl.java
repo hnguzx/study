@@ -1,11 +1,9 @@
 package main.service.impl;
 
-import main.dao.CustomerDao;
+import main.dto.dao.CustomerDao;
 import main.dto.WebResp;
 import main.model.Customer;
 import main.service.CustomerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

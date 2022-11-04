@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="web" name="Web">
+      <configuration>
+        <webroots />
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src/main/java" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
+      </configuration>
+    </facet>
+    <facet type="Spring" name="Spring">
+      <configuration />
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -97,5 +111,16 @@
     <orderEntry type="library" name="Maven: com.itextpdf:itextpdf:5.5.13.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: io.github.biezhi:webp-io:0.0.5" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-all-deps:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-core:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-win32:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-win64:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-linux32:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-linux64:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-osx64:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-osxm1:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-linux-arm32:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: ws.schild:jave-nativebin-linux-arm64:3.3.1" level="project" />
+    <orderEntry type="library" name="Maven: cn.hutool:hutool-all:5.8.2" level="project" />
   </component>
 </module>

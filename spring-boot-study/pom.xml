@@ -145,6 +145,21 @@
             <version>0.0.5</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/ws.schild/jave-all-deps -->
+        <dependency>
+            <groupId>ws.schild</groupId>
+            <artifactId>jave-all-deps</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
+        <!--hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.2</version>
+        </dependency>
+
+
 
 
 

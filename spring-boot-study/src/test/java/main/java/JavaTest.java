@@ -1,25 +1,32 @@
 package main.java;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import main.model.Customer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import ws.schild.jave.Encoder;
+import ws.schild.jave.EncoderException;
+import ws.schild.jave.MultimediaObject;
+import ws.schild.jave.encode.AudioAttributes;
+import ws.schild.jave.encode.EncodingAttributes;
+import ws.schild.jave.process.ProcessWrapper;
+import ws.schild.jave.process.ffmpeg.DefaultFFMPEGLocator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
-import static java.lang.Math.*;
-
-import org.junit.jupiter.api.Assertions.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class JavaTest {
@@ -187,7 +194,7 @@ public class JavaTest {
         list.add(customer2);
         log.info("before change list:{}", list.toString());
         for (Customer customer : list) {
-            customer.setUsername("123");
+            customer.setUserName("123");
         }
         log.info("after change list:{}", list.toString());
     }
@@ -220,8 +227,8 @@ public class JavaTest {
 
     void setCustomer(Customer customer) {
         customer.setId(1);
-        customer.setUsername("name");
-        customer.setPassword("123456");
+        customer.setUserName("name");
+        customer.setPassWord("123456");
     }
 
     @Test
@@ -250,10 +257,9 @@ public class JavaTest {
 
     @Test
     void stringToNumber() {
-        String number = "45.6";
+        String number = "4.7.0";
         String substring = number.substring(0, 3);
         log.info("version is :{}", substring);
-
         if (Float.parseFloat(substring) < 4.7) {
             log.info("小于4.7");
         } else {
@@ -273,6 +279,208 @@ public class JavaTest {
         log.info("s:{}", s.toString());
         s.setLength(0);
         log.info("s:{}", s.toString());
+    }
+
+    @Test
+    void floatAndDouble() {
+        float a = 0.5f;
+        double b = 0.5;
+        log.info("a < b : ?{}", a < b);
+        log.info("a > b : ?{}", a > b);
+        log.info("a == b : ?{}", a == b);
+
+
+    }
+
+    @Test
+    void testGson() {
+        String s = new Gson().toJson(null);
+        log.info("s : " + s);
+
+        List<Customer> customers = Arrays.asList(new Customer(1, "username", "password"));
+        log.info("customers : " + customers);
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(5, -1);
+
+        log.info("data time :{}", c.getTime());
+
+        Customer customer = new Customer(1, "username", "password");
+        String simpleName = customer.getClass().getSimpleName();
+        log.info("simple name : " + simpleName + " date:{}", new Date().getDate());
+    }
+
+    @Test
+    void testDate() {
+        boolean i = false;
+        testGson(i);
+    }
+
+    void testGson(Object o) {
+        log.info("{}",o.getClass() == Boolean.class);
+        log.info("{}",o.getClass() == Boolean.TYPE);
+    }
+
+    @Test
+    void testMp3() throws IOException {
+        // 输入音频
+        File sourceFile = new File("D:\\KuGou\\弦子 - 舍不得.mp3");
+        FileInputStream sourceStream = new FileInputStream(sourceFile);
+        long fileSize = sourceFile.length();
+        // 4,703,458
+        long tag = fileSize / 1024 / 5;
+        log.info("file size : {}, all adv times:{}", fileSize, tag);
+        File advFile = new File(("D:\\KuGou\\筠子 - 立秋.mp3"));
+        FileInputStream targetStream = new FileInputStream(advFile);
+
+        BufferedInputStream music1 = new BufferedInputStream(sourceStream);
+        BufferedInputStream music2 = new BufferedInputStream(targetStream);
+        // 输出音频
+        File resultFile = new File(("D:\\KuGou\\test.mp3"));
+        FileOutputStream fileOutputStream = new FileOutputStream(resultFile, true);
+        BufferedOutputStream music3 = new BufferedOutputStream(fileOutputStream);
+
+        byte[] bytes = new byte[1024];
+        int sourceLength, advLength;
+        int i = 0;
+        while ((sourceLength = music1.read(bytes)) != -1) {
+            // 插入广告
+            if (i == tag || i == 0) {
+                while ((advLength = music2.read(bytes)) != -1) {
+                    i++;
+                    music3.write(bytes, 0, advLength);
+                    music3.write(bytes, 0, sourceLength);
+                    music3.flush();
+                }
+            } else {
+                i++;
+                music3.write(bytes, 0, sourceLength);
+                music3.flush();
+            }
+
+        }
+
+        log.info("一共读取了{}次", i);
+
+        music1.close();
+        music2.close();
+        music3.close();
+    }
+
+    @Test
+    void testAac2Mp3() throws EncoderException {
+        File advFile = new File(("D:\\KuGou\\adv.aac"));
+        MultimediaObject music1 = new MultimediaObject(advFile);
+        File targetFile = new File("D:\\KuGou\\adv.mp3");
+        AudioAttributes audioAttributes = new AudioAttributes();
+        Encoder encoder = new Encoder();
+        audioAttributes.setCodec("libmp3lame");
+        EncodingAttributes encodingAttributes = new EncodingAttributes();
+        encodingAttributes.setOutputFormat("mp3");
+        encodingAttributes.setAudioAttributes(audioAttributes);
+        encoder.encode(music1, targetFile, encodingAttributes);
+    }
+
+    @Test
+    void testMusic2() throws IOException, InterruptedException {
+        File sourceFile = new File("D:\\KuGou\\筠子-立秋.mp3");
+        File advFile = new File("D:\\KuGou\\watermark.mp3");
+        File targetFile = new File("D:\\KuGou\\result.mp3");
+
+        DefaultFFMPEGLocator ffmpegLocator = new DefaultFFMPEGLocator();
+        ProcessWrapper executor = ffmpegLocator.createExecutor();
+        // 添加文件
+        executor.addArgument("-i");
+        executor.addArgument(sourceFile.getAbsolutePath());
+        executor.addArgument("-i");
+        executor.addArgument(advFile.getAbsolutePath());
+
+        executor.addArgument("-filter_complex");
+        executor.addArgument("[0:0] [1:0] concat=n=2:v=0:a=1 [a]");
+        executor.addArgument("-map");
+        executor.addArgument("[a]");
+
+        executor.addArgument(targetFile.getAbsolutePath());
+        BufferedReader br = null;
+        try {
+            executor.execute();
+            br = new BufferedReader(new InputStreamReader(executor.getErrorStream()));
+            String line;
+            while ((line = br.readLine()) != null) {
+                //输出处理过程中的日志（辅助观察处理过程）
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Test
+    void testUnderLine() {
+        String aipMaxAmt6 = humpToUnderline("nameList123");
+        log.info("underline: " + aipMaxAmt6);
+    }
+
+    public static String humpToUnderline(String str) {
+        String regex = "([A-Z])";
+        Matcher matcher = Pattern.compile(regex).matcher(str);
+        while (matcher.find()) {
+            String target = matcher.group();
+            str = str.replaceAll(target, "_" + target.toLowerCase());
+        }
+        return str;
+    }
+
+    private static Map<Class, Map<String, String>> entity2DB = new ConcurrentHashMap<Class, Map<String, String>>() {
+        {
+            put(Customer.class, new ConcurrentHashMap<>() {
+                {
+                    put("review2ndRejectReason", "review_2nd_reject_reason");
+                    put("passWord", "passWord222");
+                }
+            });
+        }
+    };
+
+    public static List<String> handlerClass(Class entityClass) {
+
+        Field[] declaredFields = entityClass.getDeclaredFields();
+        List<String> result = Arrays.stream(declaredFields)
+                .map(Field::getName)
+                .collect(Collectors.toList());
+
+        Map<String, String> fieldAndDB = entity2DB.get(entityClass);
+
+        if (entity2DB.containsKey(entityClass) && fieldAndDB.keySet().size() != declaredFields.length) {
+            for (String item : result) {
+                if (!fieldAndDB.containsKey(item)) {
+                    fieldAndDB.put(item, humpToUnderline(item));
+                }
+            }
+        } else {
+            fieldAndDB = new HashMap<>();
+            for (String item : result) {
+                fieldAndDB.put(item, humpToUnderline(item));
+            }
+            entity2DB.put(entityClass, fieldAndDB);
+        }
+        return result;
+    }
+
+    @Test
+    void testSet() {
+        List<String> strings = handlerClass(Customer.class);
+        log.info("Customer fields: " + strings);
+        log.info("entity2DB: " + entity2DB);
     }
 
 }
