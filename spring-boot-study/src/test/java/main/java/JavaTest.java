@@ -318,8 +318,8 @@ public class JavaTest {
     }
 
     void testGson(Object o) {
-        log.info("{}",o.getClass() == Boolean.class);
-        log.info("{}",o.getClass() == Boolean.TYPE);
+        log.info("{}", o.getClass() == Boolean.class);
+        log.info("{}", o.getClass() == Boolean.TYPE);
     }
 
     @Test
@@ -481,6 +481,33 @@ public class JavaTest {
         List<String> strings = handlerClass(Customer.class);
         log.info("Customer fields: " + strings);
         log.info("entity2DB: " + entity2DB);
+    }
+
+    @Test
+    void testSb() {
+        List<Customer> list = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            Customer customer = new Customer();
+            customer.setId((int) (Math.random() * 100000));
+            customer.setUserName(UUID.randomUUID().toString().substring(0, 10));
+            customer.setPassWord(UUID.randomUUID().toString().substring(0, 10));
+            list.add(customer);
+        }
+
+
+        for (int i = 0; i < 1000; i++) {
+            Set<String> password = new HashSet<>();
+            Set<String> username = new HashSet<>();
+            list.parallelStream().forEach(item -> {
+                password.add(item.getPassWord());
+                username.add(item.getUserName());
+            });
+            //if(id.size() == 0 || username.size() == 0) {
+            //    log.info("id size:{},username size:{}", id.size(), username.size());
+            //}
+            log.info("username size:{},id size:{}", new ArrayList<>(username).size(), new ArrayList<>(password).size());
+        }
+
     }
 
 }

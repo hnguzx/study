@@ -5,14 +5,16 @@ import main.model.Customer;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
-import java.util.function.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @Slf4j
 public class Java8Test {
@@ -189,6 +191,18 @@ public class Java8Test {
         log.info("localDateTime to date:{}", from);
         log.info("localDateTime to calendar:{}", from1.getTime());
 
+    }
+
+    @Test
+    void testDate2() throws ParseException {
+        Date now = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date before = format.parse("2022-11-07 00:00:00");
+        Date after = format.parse("2022-11-09 00:00:00");
+
+        boolean before1 = before.before(now);
+        boolean after1 = after.after(now);
+        log.info("before:{},after:{}", before1, after1);
     }
 
     @Test
