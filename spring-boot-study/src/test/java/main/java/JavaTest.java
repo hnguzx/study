@@ -1,5 +1,6 @@
 package main.java;
 
+import cn.hutool.core.date.DateUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import main.model.Customer;
@@ -21,6 +22,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -508,6 +510,63 @@ public class JavaTest {
             log.info("username size:{},id size:{}", new ArrayList<>(username).size(), new ArrayList<>(password).size());
         }
 
+    }
+
+    @Test
+    void testWidthAndHeight() {
+        String widthStr = "392.456";
+        String heightStr = "856.214";
+        String[] widths = widthStr.split("\\.");
+        double width = Double.parseDouble(widths[0]);
+        String[] heights = heightStr.split("\\.");
+        double height = Double.parseDouble(heights[0]);
+        double v = width / height;
+        if ("0.45".equals(String.format("%#,.2f", v)) || "0.46".equals(String.format("%#,.2f", v))) {
+            log.info("大于或等于");
+        } else {
+            log.info("小于");
+        }
+
+    }
+
+    @Test
+    void testMath() {
+        double rate = 0.14;
+        Double v = rate * 10000 / 365;
+        log.info("result : {}", Math.floor(v));
+        log.info("result : {}", v.intValue());
+
+        int i = 123456;
+//        double j = i * 1.0 / 100;
+        String j = "123456.789";
+        log.info("money : {}", String.format("%#,.2f", Double.parseDouble(j)));
+
+        BigDecimal realRate = BigDecimal.valueOf(0.14);
+
+        BigDecimal interest = realRate.multiply(new BigDecimal("10000")).divide(new BigDecimal("365"), 0, BigDecimal.ROUND_DOWN);
+        log.info("interest : {}", interest);
+    }
+
+    @Test
+    void testSort() {
+        Customer c1 = new Customer(1, "123", "987");
+        Customer c2 = new Customer(2, "456", "456");
+        Customer c3 = new Customer(3, "789", "123");
+
+        List<Customer> customers = new ArrayList<Customer>();
+        customers.add(c1);
+        customers.add(c2);
+        customers.add(c3);
+
+        Optional<Customer> first = customers.stream().max(Comparator.comparingInt(Customer::getId));
+//                Math.toIntExact(Long.parseLong(item1.getUserName()) - Long.parseLong(item2.getUserName())));
+
+        log.info("max username:{}", first.get());
+    }
+
+    @Test
+    void testHuo() {
+        log.info("||:{}", 1 > 0 || 2 / 0 == 1);
     }
 
 }
