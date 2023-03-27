@@ -11,48 +11,58 @@ import java.util.Map;
 @Slf4j
 public class ReadDataListener<Object> implements ReadListener<Object> {
 
+
+
     /**
      * 读取表格中一行
      * 可以读取后入库
+     *
      * @param data    one row value. Is is same as {@link AnalysisContext#readRowHolder()}
      * @param context analysis context
      */
     @Override
     public void invoke(Object data, AnalysisContext context) {
-
+        log.info("解析到数据：{}", data.toString());
     }
 
     /**
      * 读取完成后的操作
+     *
      * @param context
      */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-
+        log.info("所有数据解析完成！");
     }
 
     /**
      * 读取头数据
+     *
      * @param headMap
      * @param context
      */
     @Override
     public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
+        log.info("表格头信息：{}", headMap.get(0).getStringValue());
+        log.info("表格头信息：{}", headMap.get(10).getStringValue());
         ReadListener.super.invokeHead(headMap, context);
     }
 
     /**
      * 读取额外信息(批注、超链接、合并单元格信息读取)
+     *
      * @param extra   extra information
      * @param context analysis context
      */
     @Override
     public void extra(CellExtra extra, AnalysisContext context) {
+        log.info("表格特殊信息：{}", extra);
         ReadListener.super.extra(extra, context);
     }
 
     /**
      * 数据读取异常处理
+     *
      * @param exception
      * @param context
      * @throws Exception
@@ -64,6 +74,7 @@ public class ReadDataListener<Object> implements ReadListener<Object> {
 
     /**
      * 判断是否继续读取
+     *
      * @param context
      * @return
      */

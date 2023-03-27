@@ -81,7 +81,7 @@ public class EasyExcelTest {
         ImportParams params = new ImportParams();
         params.setTitleRows(0);
         params.setHeadRows(1);
-        File file = new File("D:\\file\\file\\userInfo.xlsx");
+        File file = new File("D:\\file\\file\\import.xlsx");
         log.info("file size: " + file.length());
         List<Object> objects = ExcelImportUtil.importExcel(file, ExcelModel.class, params);
         log.info("size of objects:{}", objects.size());

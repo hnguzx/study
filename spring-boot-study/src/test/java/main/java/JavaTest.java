@@ -5,6 +5,18 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import main.model.Customer;
 import org.junit.jupiter.api.Test;
+import org.pentaho.di.core.KettleEnvironment;
+import org.pentaho.di.core.database.DatabaseMeta;
+import org.pentaho.di.core.exception.KettleException;
+import org.pentaho.di.core.plugins.PluginFolder;
+import org.pentaho.di.core.plugins.StepPluginType;
+import org.pentaho.di.core.util.EnvUtil;
+import org.pentaho.di.repository.ObjectId;
+import org.pentaho.di.repository.RepositoryDirectoryInterface;
+import org.pentaho.di.repository.kdr.KettleDatabaseRepository;
+import org.pentaho.di.repository.kdr.KettleDatabaseRepositoryMeta;
+import org.pentaho.di.trans.Trans;
+import org.pentaho.di.trans.TransMeta;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -24,11 +36,16 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static org.apache.catalina.util.ConcurrentDateFormat.GMT;
 
 @Slf4j
 public class JavaTest {
@@ -314,9 +331,11 @@ public class JavaTest {
     }
 
     @Test
-    void testDate() {
-        boolean i = false;
-        testGson(i);
+    void testDate() throws ParseException {
+//        boolean i = false;
+//        testGson(i);
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        log.info("毫秒值：{}", format.parse("2023-01-18").getTime());
     }
 
     void testGson(Object o) {
@@ -565,8 +584,48 @@ public class JavaTest {
     }
 
     @Test
-    void testHuo() {
-        log.info("||:{}", 1 > 0 || 2 / 0 == 1);
+    void testHuo() throws ParseException {
+//        log.info("||:{}", 1 > 0 || 2 / 0 == 1);
+        DateFormat oldformat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat newFormat = new SimpleDateFormat("dd/MM/yyyy");
+//        newFormat.setTimeZone(CST);
+//        long l = format.parse("2023-01-08").getTime() - format.parse("2030-01-01").getTime();
+//
+//        log.info("result:{}", l);
+
+        List<String> date = new ArrayList<>();
+        date.add("2023-01-08");
+        date.add("2030-01-01");
+
+        Optional<String> min = date.stream().min((item1, item2) -> {
+            try {
+                return oldformat.parse(item1).getTime() - oldformat.parse(item2).getTime() >= 0 ? 1 : -1;
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        log.info("min date:{}", min.get());
+
+        String formatDate = "2022-12-25";
+
+        String dateString = newFormat.format(oldformat.parse(formatDate));
+        log.info("max date:{}", dateString);
+
+        String dateString2 = formatDate(oldformat.parse(formatDate), "dd/MM/yyyy");
+        log.info("max date2:{}", dateString2);
     }
+
+    public static String formatDate(Date date, String pattern) {
+        if (date == null) {
+            throw new IllegalArgumentException("date is null");
+        } else if (pattern == null) {
+            throw new IllegalArgumentException("pattern is null");
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.US);
+            formatter.setTimeZone(GMT);
+            return formatter.format(date);
+        }
+    }
+
 
 }
