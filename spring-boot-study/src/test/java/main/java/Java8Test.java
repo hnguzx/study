@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class Java8Test {
@@ -223,6 +224,39 @@ public class Java8Test {
 
         Date starTime = Date.from(now.plusHours(-1).atZone(ZoneId.systemDefault()).toInstant());
         log.info("one hours before dateTime:{}", starTime);
+    }
+
+    @Test
+    void testStream2() {
+        List<Customer> primitive = new ArrayList<>();
+        primitive.add(new Customer(1, "1001", "password1"));
+        primitive.add(new Customer(4, "1004", "password"));
+
+        List<Customer> results = new ArrayList<>();
+        results.add(new Customer(1, "1001", "password2"));
+
+        primitive.addAll(results);
+
+        Map<String, Customer> collect = primitive.stream().
+                collect(Collectors.toMap(Customer::getUserName, item -> item, (o1, o2) -> null));
+        primitive = new ArrayList<>(collect.values());
+        log.info("去重后的：{}", primitive);
+    }
+
+    @Test
+    void testFor() {
+        for (int i = 0; i < 10; i++) {
+            if (i == 3) {
+                break;
+            }
+            log.info("loop:{}", i);
+        }
+    }
+
+    @Test
+    void testByte(){
+        Byte b = null;
+        log.info("byte:{}", b);
     }
 
 }

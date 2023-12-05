@@ -74,6 +74,8 @@ logging:
 response:
   path: classpath:app/
 
+certificate:
+  path: classpath:dzwjyqbfzzs.cer
 
 ---
 spring:
