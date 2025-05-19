@@ -2,8 +2,13 @@ package main.java;
 
 import cn.hutool.core.date.DateUtil;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 import main.model.Customer;
+import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.Test;
 //import org.pentaho.di.core.KettleEnvironment;
 //import org.pentaho.di.core.database.DatabaseMeta;
@@ -29,9 +34,11 @@ import ws.schild.jave.encode.EncodingAttributes;
 import ws.schild.jave.process.ProcessWrapper;
 import ws.schild.jave.process.ffmpeg.DefaultFFMPEGLocator;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -39,6 +46,9 @@ import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
@@ -151,7 +161,7 @@ public class JavaTest {
         List<String> list = new ArrayList<>();
         list.add("123");
         list.add("456");
-        list.add("789");
+        list.add(null);
         list.add(0, "guzhixiong");
         log.info(list.toString());
 
@@ -159,7 +169,24 @@ public class JavaTest {
 
     @Test
     public void testString() {
-        log.info("pDf".toLowerCase());
+//        log.info("pDf".toLowerCase());
+//        String test = "123456";
+//        String substring = test.substring(5);
+//        log.info("substring = {\"name\":{}}", substring);
+//        Gson gson = new GsonBuilder().create();
+        Map<String, String> map = new HashMap<>();
+        map.put("name", null);
+//        String json = gson.toJson(map);
+//
+//        JsonObject object = gson.fromJson(json, JsonObject.class);
+//
+//        JsonElement element = object.get("name");
+//        String name = element.getAsString();
+//        String[] s = name.split(" ");
+//        log.info("name = {}", s.length);
+        log.info("name:{}", map.get("name"));
+
+
     }
 
     private Map<String, Integer> map = new HashMap<String, Integer>() {
@@ -173,6 +200,15 @@ public class JavaTest {
     public void testMap() {
         String name = "guzx";
         log.info("获取到的age:{}", map.get(name));
+
+        List<Customer> userByUserId = new ArrayList<>();
+        userByUserId.add(new Customer(25, "lh", "123"));
+        userByUserId.add(new Customer(26, "gzx", "456"));
+        userByUserId.add(new Customer(27, "gzx", "456"));
+        if (CollectionUtils.isNotEmpty(userByUserId)) {
+            Map<String, String> registerMap = userByUserId.stream().collect(Collectors.toMap(Customer::getUserName, Customer::getPassWord));
+            log.info("registerMap:{}", registerMap);
+        }
     }
 
     @Test
@@ -336,6 +372,9 @@ public class JavaTest {
 //        testGson(i);
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         log.info("毫秒值：{}", format.parse("2023-01-18").getTime());
+        Date date = new Date();
+        int dateDate = date.getDate();
+        log.info("当前日期：{}", dateDate);
     }
 
     void testGson(Object o) {
@@ -414,6 +453,8 @@ public class JavaTest {
         // 添加文件
         executor.addArgument("-i");
         executor.addArgument(sourceFile.getAbsolutePath());
+//        executor.addArgument("-ss");
+//        executor.addArgument("00:00:02");
         executor.addArgument("-i");
         executor.addArgument(advFile.getAbsolutePath());
 
@@ -421,7 +462,9 @@ public class JavaTest {
         executor.addArgument("[0:0] [1:0] concat=n=2:v=0:a=1 [a]");
         executor.addArgument("-map");
         executor.addArgument("[a]");
-
+        executor.addArgument("-f");
+        executor.addArgument("mp3");
+        executor.addArgument("-y");
         executor.addArgument(targetFile.getAbsolutePath());
         BufferedReader br = null;
         try {
@@ -627,5 +670,226 @@ public class JavaTest {
         }
     }
 
+    @Test
+    void testImage() {
+        File file = new File("C:\\Users\\25446\\Desktop\\eep check\\demo.pdf");
+        try {
+            // 尝试读取图片信息
+            BufferedImage read = ImageIO.read(file);
+
+            // 如果能够读取到图片信息，说明该文件是图片
+            if (read != null) {
+                log.info("is image");
+            } else {
+                log.info("not image");
+            }
+        } catch (IOException e) {
+            // 如果读取失败，说明该文件不是图片
+            log.info("not image file");
+        }
+    }
+
+    @Test
+    public void getBeginningOfToday() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date time = calendar.getTime();
+        System.out.println(time);
+    }
+
+    @Test
+    public void testEnDate() {
+//        String inputDate1 = "20210101";
+//        String inputDate2 = "20210202";
+//        String inputDate3 = "20210303";
+//        String inputDate4 = "20210404";
+//        String inputDate5 = "20210505";
+//        String inputDate6 = "20210606";
+//        String inputDate7 = "20210707";
+//        String inputDate8 = "20210808";
+//        String inputDate9 = "20210909";
+//        String inputDate10 = "20211010";
+//        String inputDate11 = "20211111";
+//        String inputDate12 = "20211212";
+//        System.out.println("en Date:" + formatEnDate(inputDate1));
+//        System.out.println("en Date:" + formatEnDate(inputDate2));
+//        System.out.println("en Date:" + formatEnDate(inputDate3));
+//        System.out.println("en Date:" + formatEnDate(inputDate4));
+//        System.out.println("en Date:" + formatEnDate(inputDate5));
+//        System.out.println("en Date:" + formatEnDate(inputDate6));
+//        System.out.println("en Date:" + formatEnDate(inputDate7));
+//        System.out.println("en Date:" + formatEnDate(inputDate8));
+//        System.out.println("en Date:" + formatEnDate(inputDate9));
+//        System.out.println("en Date:" + formatEnDate(inputDate10));
+//        System.out.println("en Date:" + formatEnDate(inputDate11));
+//        System.out.println("en Date:" + formatEnDate(inputDate12));
+        System.out.println("tt  en Date:" + formatEnDate("20290515"));
+    }
+
+    public String formatEnDate(String inputDate) {
+        // 定义输入日期的格式
+        SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+
+        // 定义目标日期的格式
+        SimpleDateFormat outputFormatter = new SimpleDateFormat("ddMMMyyyy", Locale.ENGLISH);
+
+        try {
+            // 解析输入日期为 Date 对象
+            Date date = inputFormatter.parse(String.valueOf(inputDate));
+
+            // 格式化日期为目标格式
+            return outputFormatter.format(date);
+        } catch (ParseException e) {
+            log.error("CoreBankDataUtils.formatEnDate exception:", e);
+        }
+        return null;
+    }
+
+    @Test
+    public void testFind() {
+        int[] array = {10, 8, 6, 4, 2}; // 降序数组
+        int target = 0; // 指定的值
+
+        int closestValue = findClosestValue2(array, target);
+        System.out.println("Closest value: " + closestValue);
+    }
+
+    public static int findClosestValue(int[] array, int target) {
+        int left = 0;
+        int right = array.length - 1;
+        int closestValue = -1; // 初始化为一个特定的标识，如-1
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (array[mid] == target) {
+                return array[mid];
+            } else if (array[mid] > target) {
+                closestValue = array[mid]; // 更新最接近的值
+                left = mid + 1;
+            } else {
+                closestValue = array[mid]; // 更新最接近的值
+                right = mid - 1;
+            }
+            if (array[right] > target) {
+                break;
+            }
+        }
+
+        return closestValue;
+    }
+
+    public static int findClosestValue2(int[] array, int target) {
+        int left = 0;
+        int right = array.length - 1;
+        int closestValue = -1; // 初始化为一个特定的标识，如-1
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (array[mid] == target) {
+                return array[mid];
+            } else if (array[mid] > target) {
+                left = mid + 1;
+            } else {
+                closestValue = array[mid]; // 更新最接近的值
+                right = mid - 1;
+            }
+        }
+        return closestValue;
+    }
+
+    @Test
+    public void test2() {
+        Pattern pattern = Pattern.compile("(?:出境|入境).+?\\d{4}-\\d{2}-\\d{2}");
+        String demo = "入境 2023-10-16 往来港澳通行证 CA3271602 测试口岸";
+        Matcher matcher = pattern.matcher(demo);
+        System.out.println("是否匹配：" + matcher.find());
+    }
+
+    @Test
+    public void testChar() {
+        String demo = "12345678910";
+        char c = demo.charAt(9);
+        System.out.println("获取到的字符是：" + c);
+        if (c == 49) {
+            System.out.println("符合要求");
+        } else {
+            System.out.println("不符合要求");
+        }
+    }
+
+    @Test
+    public void testDateC() throws ParseException {
+//        Date lastExitDate = DateUtil.offsetDay(new Date(),-10);
+//        Date applyDate = DateUtil.offsetDay(new Date(),-1);
+//        int compare = DateUtil.s(lastExitDate, applyDate);
+//        System.out.println("日期相差" + compare + "天");
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date lastExitDate = sdf.parse("2023-11-18 21:33:18");
+        Date applyDate = sdf.parse("2023-11-19 20:33:18");
+
+        LocalDate localDate1 = lastExitDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate2 = applyDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        long days = ChronoUnit.DAYS.between(localDate1, localDate2);
+        System.out.println("日期相差" + days + "天");
+    }
+
+    @Test
+    public void testTxt(){
+//        String input = "D:\\tempFile\\input.txt";
+//        String output = "D:\\tempFile\\output.txt";
+//        processFile(input, output);
+
+        List<String> lbsRecordList = new ArrayList<>();
+        lbsRecordList.add("1");
+        lbsRecordList.add("2");
+        lbsRecordList.add("3");
+//        Iterator<String> iterator = lbsRecordList.iterator();
+//        while(iterator.hasNext()){
+//            String next = iterator.next();
+//            if (next.equals("2")) {
+//                iterator.remove();
+//            }
+//        }
+        for (String record : lbsRecordList) {
+            if (record.equals("2")) {
+                lbsRecordList.remove(record);
+            }
+        }
+
+        System.out.println(lbsRecordList);
+    }
+
+    public static void processFile(String inputFileName, String outputFileName) {
+        try {
+            File inputFile = new File(inputFileName);
+            Scanner scanner = new Scanner(inputFile);
+            PrintWriter writer = new PrintWriter(outputFileName);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String processedLine = processLine(line); // 自定义的处理方法
+                writer.println(processedLine);
+            }
+
+            scanner.close();
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static String processLine(String line) {
+        // 使用正则表达式将驼峰格式的变量名转为下划线形式的变量名
+        return line.replaceAll("([a-z])([A-Z]+)", "$1_$2").toLowerCase();
+    }
 
 }

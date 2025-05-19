@@ -8,10 +8,14 @@ import ws.schild.jave.EncoderException;
 import ws.schild.jave.MultimediaObject;
 import ws.schild.jave.encode.AudioAttributes;
 import ws.schild.jave.encode.EncodingAttributes;
+import ws.schild.jave.info.MultimediaInfo;
 import ws.schild.jave.process.ProcessWrapper;
 import ws.schild.jave.process.ffmpeg.DefaultFFMPEGLocator;
+import ws.schild.jave.progress.EncoderProgressListener;
 
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 public class MusicTest {
@@ -86,6 +90,70 @@ public class MusicTest {
         encodingAttributes.setOutputFormat("mp3");
         encodingAttributes.setAudioAttributes(audioAttributes);
         encoder.encode(music1, targetFile, encodingAttributes);
+    }
+
+    @Test
+    void testMp32Wav() throws EncoderException {
+        File advFile = new File(("D:\\KuGou\\李荣浩 - 贝贝.mp3"));
+        MultimediaObject music1 = new MultimediaObject(advFile);
+        File targetFile = new File("D:\\KuGou\\李荣浩 - 贝贝.wav");
+
+        AudioAttributes audio = new AudioAttributes();
+        audio.setCodec("pcm_s16le");
+        audio.setChannels(2);
+        audio.setSamplingRate(44100);
+
+        EncodingAttributes attributes = new EncodingAttributes();
+        attributes.setOutputFormat("wav");
+        attributes.setAudioAttributes(audio);
+
+        Encoder encoder = new Encoder();
+        PListener listener = new PListener();
+        encoder.encode(new MultimediaObject(advFile), targetFile, attributes, listener);
+    }
+
+    protected class PListener implements EncoderProgressListener
+    {
+        private MultimediaInfo _info= null;
+        private final List<String> _messages= new LinkedList<>();
+        private final List<Integer> _progress= new LinkedList<>();
+
+        @Override
+        public void sourceInfo(MultimediaInfo info) {
+            _info= info;
+        }
+
+        @Override
+        public void progress(int permil) {
+            _progress.add(permil);
+        }
+
+        @Override
+        public void message(String message) {
+            _messages.add(message);
+        }
+
+        /**
+         * @return the _info
+         */
+        public MultimediaInfo getInfo() {
+            return _info;
+        }
+
+        /**
+         * @return the _messages
+         */
+        public List<String> getMessages() {
+            return _messages;
+        }
+
+        /**
+         * @return the _progress
+         */
+        public List<Integer> getProgress() {
+            return _progress;
+        }
+
     }
 
     @Test
@@ -233,9 +301,15 @@ public class MusicTest {
 //        encodingAttributes.setInputFormat("mp3");
         encodingAttributes.setOutputFormat("mp3");
         encodingAttributes.setAudioAttributes(audioAttributes);
-        encodingAttributes.setDuration(duration * 10f);
+        encodingAttributes.setDuration(duration * 100f);
+
+        MultimediaObject object = new MultimediaObject(targetFile);
+        long duration2 = object.getInfo().getDuration();
+        object.getInfo().setDuration(duration2 * 10);
 
         encoder.encode(srcMultiObj, targetFile, encodingAttributes);
+
+        log.info("水印文件播放时长：{}ms", duration2);
 
     }
 
@@ -255,7 +329,7 @@ public class MusicTest {
         executor.addArgument("-i");
         executor.addArgument(sourceFile.getAbsolutePath());
         executor.addArgument("-stream_loop");
-        executor.addArgument("2");
+        executor.addArgument("1");
         executor.addArgument("-i");
         executor.addArgument(waterMark.getAbsolutePath());
         executor.addArgument("-filter_complex");
