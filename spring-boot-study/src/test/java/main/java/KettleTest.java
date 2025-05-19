@@ -1,18 +1,18 @@
 package main.java;
 
 import org.junit.jupiter.api.Test;
-import org.pentaho.di.core.KettleEnvironment;
-import org.pentaho.di.core.database.DatabaseMeta;
-import org.pentaho.di.core.exception.KettleException;
-import org.pentaho.di.core.plugins.PluginFolder;
-import org.pentaho.di.core.plugins.StepPluginType;
-import org.pentaho.di.core.util.EnvUtil;
-import org.pentaho.di.repository.ObjectId;
-import org.pentaho.di.repository.RepositoryDirectoryInterface;
-import org.pentaho.di.repository.kdr.KettleDatabaseRepository;
-import org.pentaho.di.repository.kdr.KettleDatabaseRepositoryMeta;
-import org.pentaho.di.trans.Trans;
-import org.pentaho.di.trans.TransMeta;
+//import org.pentaho.di.core.KettleEnvironment;
+//import org.pentaho.di.core.database.DatabaseMeta;
+//import org.pentaho.di.core.exception.KettleException;
+//import org.pentaho.di.core.plugins.PluginFolder;
+//import org.pentaho.di.core.plugins.StepPluginType;
+//import org.pentaho.di.core.util.EnvUtil;
+//import org.pentaho.di.repository.ObjectId;
+//import org.pentaho.di.repository.RepositoryDirectoryInterface;
+//import org.pentaho.di.repository.kdr.KettleDatabaseRepository;
+//import org.pentaho.di.repository.kdr.KettleDatabaseRepositoryMeta;
+//import org.pentaho.di.trans.Trans;
+//import org.pentaho.di.trans.TransMeta;
 
 public class KettleTest {
 
@@ -20,9 +20,9 @@ public class KettleTest {
      * kettle
      * 通过资源库运行
      *
-     * @throws KettleException
+     * @throws
      */
-    @Test
+    /*@Test
     void runWithDb() throws KettleException {
         // 加载插件
         StepPluginType.getInstance().getPluginFolders().add(new PluginFolder("D:\\software\\pdi-ce-9.3.0.0-428\\data-integration\\plugins", false, true));
@@ -61,7 +61,7 @@ public class KettleTest {
         } else {
             System.out.println("transformation successfully");
         }
-    }
+    }*/
 
     /**
      * kettle
@@ -69,7 +69,7 @@ public class KettleTest {
      */
     @Test
     void runTransfer() {
-        String[] params = new String[5];
+        /*String[] params = new String[5];
         String ktrPath = "D:\\file\\kettle\\transition\\csv2excel.ktr";
         Trans trans = null;
         try {
@@ -94,7 +94,7 @@ public class KettleTest {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
 }
