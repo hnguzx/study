@@ -3,9 +3,9 @@ package main.java;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import main.util.Base64Util;
-import net.lingala.zip4j.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.FileHeader;
+//import net.lingala.zip4j.ZipFile;
+//import net.lingala.zip4j.exception.ZipException;
+//import net.lingala.zip4j.model.FileHeader;
 import org.junit.Test;
 
 import java.io.*;
@@ -45,7 +45,7 @@ public class ZipTest {
 
 
     public static void unzip(String zipFilePath, String destDirectory, String password) throws IOException {
-        try {
+        /*try {
             ZipFile zipFile = new ZipFile(zipFilePath);
             if (zipFile.isEncrypted()) {
                 zipFile.setPassword(password.toCharArray());
@@ -66,11 +66,11 @@ public class ZipTest {
             }
         } catch (ZipException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void unzip(FileEntity fileEntity, String userId, String password) throws IOException {
-        String destDirectory = "/home/work/tmp/zip_file/" + userId + "/";
+        /*String destDirectory = "/home/work/tmp/zip_file/" + userId + "/";
         Path destDir = Path.of(destDirectory);
         if (!Files.exists(destDir)) {
             Files.createDirectories(destDir);
@@ -120,7 +120,7 @@ public class ZipTest {
                 }
                 unzipDirectory.delete();
             }
-        }
+        }*/
     }
 
     @Data

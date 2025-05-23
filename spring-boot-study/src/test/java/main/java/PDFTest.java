@@ -4,8 +4,8 @@ package main.java;
 //import com.itextpdf.kernel.pdf.PdfReader;
 //import com.itextpdf.kernel.pdf.PdfWriter;
 
-import com.itextpdf.kernel.pdf.*;
-import com.itextpdf.layout.Document;
+//import com.itextpdf.kernel.pdf.*;
+//import com.itextpdf.layout.Document;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,7 @@ import java.io.IOException;
 
 public class PDFTest {
     public static void main(String[] args) {
-        String sourceFilePath = "C:\\Users\\25446\\Downloads\\15d_Time deposit application_amendment form_202309_v2.pdf";
+        /*String sourceFilePath = "C:\\Users\\25446\\Downloads\\15d_Time deposit application_amendment form_202309_v2.pdf";
 //        String sourceFilePath = "C:\\Users\\25446\\Downloads\\Change of Customer Contact form.pdf";
 //        String sourceFilePath = "C:\\Users\\25446\\Desktop\\fsdownload\\1667274013376007.pdf";
 //        String sourceFilePath = "C:\\Users\\25446\\Desktop\\fsdownload\\2new.pdf";
@@ -51,7 +51,7 @@ public class PDFTest {
             System.out.println("PDF文件读取和重新写入成功！");
         } catch (Exception e) {
             System.out.println("发生错误：" + e);
-        }
+        }*/
     }
 
 }

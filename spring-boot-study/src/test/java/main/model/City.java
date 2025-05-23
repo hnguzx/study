@@ -6,6 +6,9 @@ import lombok.Data;
 @Data
 public class City {
 
-    @ExcelProperty("city")
-    private String countryCity;
+    @ExcelProperty(index = 0)
+    private String country;
+
+    @ExcelProperty(index = 1)
+    private String city;
 }
