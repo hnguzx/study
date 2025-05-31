@@ -904,4 +904,55 @@ public class ExcelTest {
             System.err.println("生成SQL文件时发生错误：" + e.getMessage());
         }
     }
+
+    @Test
+    public void importRiskClientInfo() {
+        String excelPath = "/Users/admin/Downloads/中风险账户（命中两个以上的中风险标签），且不含白特征的用户.xlsx";  // Excel文件路径
+        String countrySqlPath = "risk.sql";
+
+        List<ClientInfo> couponPools = new ArrayList<>();
+
+        // 读取Excel文件
+        EasyExcel.read(excelPath, ClientInfo.class, new AnalysisEventListener<ClientInfo>() {
+            @Override
+            public void invoke(ClientInfo couponPool, AnalysisContext context) {
+                couponPools.add(couponPool);
+            }
+
+            @Override
+            public void doAfterAllAnalysed(AnalysisContext context) {
+                // 生成SQL语句
+                generateInsertSqlFile(couponPools, countrySqlPath);
+            }
+        }).sheet(0).doRead();
+        log.info("coupool size:{}", couponPools.size());
+    }
+
+    private static void generateInsertSqlFile(List<ClientInfo> couponPools, String sqlPath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(sqlPath))) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("INSERT INTO account_info.tag_client_base_info (user_id, area_code, phone, operator, account_open_status, remarks,\n" +
+                    "                                               create_time, update_time)\n" +
+                    "select user_id,\n" +
+                    "       phone_area_code,\n" +
+                    "       phone,\n" +
+                    "       'admin',\n" +
+                    "       'already_opened',\n" +
+                    "       '中风险用户',\n" +
+                    "       now(),\n" +
+                    "       now()\n" +
+                    "from account_info.client_info\n" +
+                    "where client_number in (");
+            for (ClientInfo couponPool : couponPools) {
+                stringBuilder.append("'").append(couponPool.getClientId()).append("'").append(",");
+
+            }
+            stringBuilder.append(");");
+            writer.write(stringBuilder.toString());
+            writer.newLine();
+            System.out.println("SQL文件生成成功：" + sqlPath);
+        } catch (IOException e) {
+            System.err.println("生成SQL文件时发生错误：" + e.getMessage());
+        }
+    }
 }
